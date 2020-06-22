@@ -31,7 +31,7 @@ public class BallController : MonoBehaviour
             rigid.AddForce(Vector3.forward * speedBall, ForceMode.Acceleration);
             //Debug.Log("Velocity: " + rigid.velocity);
         }
-        
+
         horizontal = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
         transform.Translate(new Vector3(horizontal, 0, 0));
 
