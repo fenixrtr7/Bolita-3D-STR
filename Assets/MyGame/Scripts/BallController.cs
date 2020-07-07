@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
+    //the object to move
+    public Transform objectToMove;
+    ///////////////////////////////
     [SerializeField] float speed = 6;
     [SerializeField] float speedBall = 12;
     [SerializeField] float limit = 4;
@@ -21,7 +24,7 @@ public class BallController : MonoBehaviour
     void FixedUpdate()
     {
         MoveBall();
-        
+
     }
 
     void MoveBall()
@@ -42,4 +45,16 @@ public class BallController : MonoBehaviour
         // re-assigning the transform's position will clamp it
         transform.position = clampedPosition;
     }
+
+    void MousePosition()
+    {
+        Vector3 mouse = Input.mousePosition;
+        Ray castPoint = Camera.main.ScreenPointToRay(mouse);
+        RaycastHit hit;
+        if (Physics.Raycast(castPoint, out hit, Mathf.Infinity))
+        {
+            objectToMove.transform.position = hit.point;
+        }
+    }
+
 }
