@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    //the object to move
-    public Transform objectToMove;
-    ///////////////////////////////
+    bool pressButton;
     [SerializeField] float speed = 6;
     [SerializeField] float speedBall = 12;
     [SerializeField] float limit = 4;
     float horizontal;
+    float valueButton;
     Rigidbody rigid;
     float maxVel = 50;
     //Vector3 limitVelocity = new Vector3(0, this.transfrom.position, 50);
@@ -34,8 +33,18 @@ public class BallController : MonoBehaviour
             rigid.AddForce(Vector3.forward * speedBall, ForceMode.Acceleration);
             //Debug.Log("Velocity: " + rigid.velocity);
         }
+#if UNITY_STANDLONE
+        valueButton = Input.GetAxis("Horizontal");
+#endif
 
-        horizontal = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
+#if UNITY_ANDROID || UNITY_IOS
+        if(pressButton)
+        {
+
+        }
+#endif
+
+        horizontal = valueButton * Time.deltaTime * speed;
         transform.Translate(new Vector3(horizontal, 0, 0));
 
         // initially, the temporary vector should equal the player's position
@@ -46,15 +55,15 @@ public class BallController : MonoBehaviour
         transform.position = clampedPosition;
     }
 
-    void MousePosition()
+    void ButtonRight()
     {
-        Vector3 mouse = Input.mousePosition;
-        Ray castPoint = Camera.main.ScreenPointToRay(mouse);
-        RaycastHit hit;
-        if (Physics.Raycast(castPoint, out hit, Mathf.Infinity))
-        {
-            objectToMove.transform.position = hit.point;
-        }
+        valueButton = 1;
+        pressButton = true;
+    }
+
+    void ButtonLeft()
+    {
+        valueButton = -1;
     }
 
 }
